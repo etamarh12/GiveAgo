@@ -1,83 +1,66 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   StyledTopBar,
   StyledButton,
+  StyledLogo,
+  StyledGroupOfBtn
 } from './topBar.styled';
-import CreateReqPopup from '../popUps/createReqPopup'
-import DeleteReqPopup from '../popUps/deleteReqPopup'
-import CreateUserPopup from '../popUps/createUserPopup'
-import DeleteUserPopup from '../popUps/deleteUserPopup'
-import CompleteDelivery from '../popUps/completeDelivery'
-import TakingDelivery from '../popUps/takingDelivery'
+import companyLogo from '../../img/giveago.png'
+import faceIcon from '../../img/icon.png'
+import { Link } from 'react-router-dom';
 
+
+//import { getUserActionsByType } from './topBarHelper/helper';
+import { useUserOptionsByType } from './topBarHelper/helper';
+import { logoutUser } from '.././../actions/loginActions';
 
 
 function TopBar() {
-  const dispatch = useDispatch();
-  const [showPopUp, setShowPopUp] = useState(-1);
+  //const [showPopUp, setShowPopUp] = useState('');
   const user = useSelector(state => state.login.user);
+  // const userActions = getUserActionsByType(user.AccountType);
+  const userOptions = useUserOptionsByType(user.AccountType);
+  const dispatch = useDispatch();
 
-  const closePopUp = () => {
-    setShowPopUp(-1);
+
+  const handleDisconnect = () => {
+    dispatch(logoutUser());
   };
 
-  const openPopUp = (popUpIndex) => () => {
-    setShowPopUp(popUpIndex);
-  };
+  // const openPopUp = (name) => {
+  // setShowPopUp(name);
+  // };
 
-  const popUps = [
-    <CreateUserPopup onClose={closePopUp} />,
-    <DeleteUserPopup onClose={closePopUp} />,
-    <CreateReqPopup onClose={closePopUp} />,
-    <DeleteReqPopup onClose={closePopUp} />,
-    <CompleteDelivery onClose={closePopUp} />,
-    <TakingDelivery onClose={closePopUp} />
-  ];
+  // const closePopUp = () => {
+  //  setShowPopUp('');
+  // };
+
 
   return (
     <StyledTopBar className='mainTopBar'>
-      {user.AccountType === 'M' && (
-        <div>
-          <StyledButton onClick={openPopUp(0)}>יצירת משתמש</StyledButton>
-          {showPopUp === 0 && popUps[0]}
+      {/* {userActions.map(({ name, popup: ActionPopup, title }) => (
+        <div key={name}>
+          <StyledButton onClick={() => openPopUp(name)}>{title}</StyledButton>
+          {showPopUp === name && <ActionPopup onClose={closePopUp} />}
         </div>
-      )}
-      {user.AccountType === 'M' && (
-        <div>
-          <StyledButton onClick={openPopUp(1)}>מחיקת משתמש</StyledButton>
-          {showPopUp === 1 && popUps[1]}
-        </div>
-      )}
-      {['M', 'B'].includes(user.AccountType) && (
-        <div>
-          <StyledButton onClick={openPopUp(2)}>יצירת משלוח</StyledButton>
-          {showPopUp === 2 && popUps[2]}
-        </div>
-      )}
-      {user.AccountType === 'M' && (
-        <div>
-          <StyledButton onClick={openPopUp(3)}>מחיקת משלוח</StyledButton>
-          {showPopUp === 3 && popUps[3]}
-        </div>
-      )}
-      {['M', 'D'].includes(user.AccountType) && (
-        <div>
-          <StyledButton onClick={openPopUp(4)}>השלמת משלוח</StyledButton>
-          {showPopUp === 4 && popUps[4]}
-        </div>
-      )}
-      {['M', 'D'].includes(user.AccountType) && (
-        <div>
-          <StyledButton onClick={openPopUp(5)}>לקיחת משלוח</StyledButton>
-          {showPopUp === 5 && popUps[5]}
-        </div>
-      )}
-      <div>
-        <StyledButton onClick={() => dispatch({ type: 'LOGOUT' })}>התנתקות</StyledButton>
+      ))} */}
+      <div><StyledLogo src={companyLogo} alt="logo" /></div>
+      <StyledGroupOfBtn>
+        {userOptions.map(({ title, name }) => (
+          <Link key={name} to={`/${name}`}>
+            <StyledButton>{title}</StyledButton>
+          </Link>
+        ))}
+      </StyledGroupOfBtn>
+      <StyledButton style={{ background: '#3370ffb9', fontSize: '12px' }} onClick={handleDisconnect}>התנתקות</StyledButton>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <img src={faceIcon} alt="icon" style={{ width: '50%', marginBottom: '10%' }} />
+        <strong style={{ color: ' #00268c', fontSize: '17px' }}>{user.UserName} </strong>
       </div>
     </StyledTopBar>
+
   );
-}
+};
 
 export default TopBar;

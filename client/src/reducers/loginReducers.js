@@ -15,7 +15,7 @@ export const loginReducer = (state = initialState, action) => {
       localStorage.setItem('user', JSON.stringify(action.payload));
       return { ...state, loading: false, user: action.payload, isLoggedIn: true };
     case 'FETCH_LOGIN_FAILURE':
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, loading: false, error: action.payload ,isLoggedIn: false};
     case 'LOGOUT':
       localStorage.removeItem('user');
       return { ...state, user: {}, isLoggedIn: false };

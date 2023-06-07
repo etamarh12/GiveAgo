@@ -5,7 +5,7 @@ export const newUser = async (req, res) => {
   // Check req.body received
   console.log("server received : " + JSON.stringify(req.body));
 
-  const { userName, userPassword, userType } = req.body;
+  const { userName, userPassword, userType, userBusinessId } = req.body;
 
   // Hash password
   const saltRounds = 10;
@@ -15,10 +15,11 @@ export const newUser = async (req, res) => {
     userName ?? null,
     hashedPassword,
     userType ?? null,
+    userBusinessId ?? 1,
   ];
 
   //Sql Query  
-  const q = `INSERT INTO accounts (UserName, Password, AccountType) VALUES (?, ?, ?)`;
+  const q = `INSERT INTO accounts (UserName, Password, AccountType, businessId) VALUES (?, ?, ?, ?)`;
   // Send req
   try {
     const [orderRes, _] = await db.promise().execute(q, [...values]);
@@ -31,6 +32,7 @@ export const newUser = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
 export const deleteUser = async (req, res) => {
 
   // Check req.body received
@@ -57,7 +59,7 @@ export const deleteUser = async (req, res) => {
 };
 export const allUsers = async (req, res) => {
   //Sql Query  
-  const q = `SELECT userId, UserName, AccountType FROM accounts`;
+  const q = `SELECT userId, UserName, AccountType, businessId FROM accounts`;
   // Send req
   try {
     const rows = await db.promise().execute(q);
@@ -68,6 +70,7 @@ export const allUsers = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
 export const stateUsers = async (req, res) => {
   //Sql Query  
   const q = `SELECT UserName, AccountType FROM accounts`;

@@ -3,14 +3,12 @@ import styled from 'styled-components';
 export const StyledPage = styled.div`
 display: flex;
 flex-direction: column;
-align-items: flex-end;
 `;
 
-export const StyledBusiness = styled.div`
+export const StyledDeliveries = styled.div`
 margin-top: 5px;
 display: flex;
 font-family: 'Heebo',sans-serif;
-border-style: ridge;
 width: 100%;
 flex-direction: column;
 align-items: stretch;
@@ -21,35 +19,28 @@ height: auto;
 text-align: right;
 width: 50%;    
 `;
-export const StyledHeader = styled.header`
-font-size: 50px;
-line-height: 16px;
-text-align: right;
-float: right;
-padding: 5px;
-white-space: break-spaces;
-color: #000000c7;
-`;
-export const StyledSearch = styled.input`
+export const StyledSearchBox = styled.input`
 background-color: #fff;
 color: #666666;
 font-size: 18.0px;
 height: 30px;
+width:30%;
 border: 1px solid #666666;
 border-radius: 5px;
-text-align: right;
-float:right;
 margin-bottom: 20px;
+text-align:center;
 `;
 
-export const StyledShipCard = styled.form`
-font-size: 26px;
-text-align: right;
-margin-bottom: 30px;
-border-bottom: 5px;
-border-bottom: outset;
-border-color: #00fff49c;
+export const StyledSearch = styled.div`
+display:flex;
+justify-content:center;
+width: 100%;
 `;
+
+export const StyledGroupOfBtn = styled.div`
+ display: flex;
+ gap: 10px;
+  `;
 
 export const StyledCollection = styled.div`
 background-color: #fff;
@@ -92,3 +83,22 @@ export const StyledLogo = styled.img`
 width: 30%;
 border-radius: 30px;
 `;
+export const StyledButton = styled.button`
+    display: inline-block;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #009293;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    :hover {
+  background-color: #267fa8;
+  
+}
+`;
+

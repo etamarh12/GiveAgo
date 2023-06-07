@@ -11,9 +11,10 @@ import {
   StyledInput,
   StyledLabel,
   StyledFooter,
-  StyledLogo
+  StyledLogo,
+  StyledField
 } from './login.styled';
-import logo from '../../img/giveago.png'
+import giveagoLogin from '../../img/giveagoLogin.png'
 
 
 export function Login() {
@@ -34,14 +35,18 @@ export function Login() {
   return (
     <StyledLogin>
       <StyledForm>
-        <StyledTitle><StyledLogo src={logo} alt="logo" /></StyledTitle>
-        <StyledLabel>: שם משתמש</StyledLabel>
-        <StyledInput type="text" placeholder="הזן משתמש" onChange={e => setUserName(e.target.value)} />
-        <StyledLabel>: סיסמה</StyledLabel>
-        <StyledInput type="password" placeholder="הזן סיסמה" onChange={e => setPassword(e.target.value)} />
+        <StyledTitle><StyledLogo src={giveagoLogin} alt="logo" /></StyledTitle>
+        <StyledField>
+          <StyledLabel>שם משתמש :</StyledLabel>
+          <StyledInput type="text" placeholder="הזן משתמש" onChange={e => setUserName(e.target.value)} />
+        </StyledField>
+        <StyledField>
+          <StyledLabel>סיסמה :</StyledLabel>
+          <StyledInput type="password" placeholder="הזן סיסמה" onChange={e => setPassword(e.target.value)} />
+        </StyledField>
         <StyledButton onClick={requestLogin} disabled={!password || !userName || loginState.loading}>כניסה</StyledButton>
         {loginState.loading && <div>Loading...</div>}
-        {loginState.error && <div>Error: {loginState.error}</div>}
+        {loginState.error && <div>{loginState.error}</div>}
       </StyledForm>
       <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
     </StyledLogin>

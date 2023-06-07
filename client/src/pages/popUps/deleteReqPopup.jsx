@@ -15,10 +15,6 @@ function DeleteReqPopup(props) {
 
     const popUpClose = () => {
         props.onClose();
-        setTimeout(() => {
-            window.location.reload();
-        }, "2000");
-
     }
 
     const handleSubmit = async (e) => {
@@ -34,7 +30,10 @@ function DeleteReqPopup(props) {
             '',
             'success'
         )
-        popUpClose();
+        props.onClose();
+        setTimeout(() => {
+            window.location.reload();
+        }, "2000");
     };
 
     const isSubmitDisabled = !deliveryId;
@@ -44,7 +43,7 @@ function DeleteReqPopup(props) {
             <StyledPopUpContent>
                 <h2>מחיקת משלוח</h2>
                 <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>: מספר שילוח</StyledLabel>
+                    <StyledLabel>מספר סידורי :</StyledLabel>
                     <StyledInput type="number" onChange={e => setDeliveryId(e.target.value)}></StyledInput>
                     <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
                 </StyledForm>

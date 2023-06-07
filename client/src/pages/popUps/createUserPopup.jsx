@@ -16,6 +16,8 @@ function CreateUserPopup(props) {
     const [userName, setUserName] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [userType, setUserType] = useState("M");
+    const [userBusinessId, setUserBusinessId] = useState(0);
+
 
     const popUpClose = () => {
         props.onClose();
@@ -24,7 +26,7 @@ function CreateUserPopup(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formData = { userName, userPassword, userType };
+            const formData = { userName, userPassword, userType, userBusinessId };
             console.log(userType)
             await axios.post('http://localhost:3001/api/users/newUser', formData);
         } catch (error) {
@@ -48,16 +50,18 @@ function CreateUserPopup(props) {
             <StyledPopUpContent>
                 <h2>יצירת משתמש</h2>
                 <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>: שם משתמש</StyledLabel>
+                    <StyledLabel>שם משתמש :</StyledLabel>
                     <StyledInput onChange={e => setUserName(e.target.value)}></StyledInput>
-                    <StyledLabel>: סיסמה</StyledLabel>
+                    <StyledLabel>סיסמה :</StyledLabel>
                     <StyledInput onChange={e => setUserPassword(e.target.value)}></StyledInput>
-                    <StyledLabel>: סוג</StyledLabel>
+                    <StyledLabel>סוג :</StyledLabel>
                     <StyledSelect onChange={e => setUserType(e.target.value)}>
                         <option value="M">מנהל</option>
                         <option value="D">שליח</option>
                         <option value="B">בעל עסק</option>
                     </StyledSelect>
+                    <StyledLabel>מספר עסק</StyledLabel>
+                    <StyledInput onChange={e => setUserBusinessId(e.target.value)}></StyledInput>
                     <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
                 </StyledForm>
                 <StyledButton onClick={popUpClose}>סגירה</StyledButton>

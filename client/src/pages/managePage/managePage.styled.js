@@ -3,32 +3,18 @@ import styled from 'styled-components';
 export const StyledPage = styled.div`
 display: flex;
 flex-direction: column;
-align-items: flex-end;
 `;
 
 export const StyledManage = styled.div`
 margin-top: 5px;
 display: flex;
 font-family: 'Heebo',sans-serif;
-border-style: ridge;
 width: 100%;
 flex-direction: column;
-align-items: stretch;
 `;
 
 export const StyledFooter = styled.footer`
 height: auto;
-text-align: right;
-`;
-
-export const StyledHeader = styled.header`
-font-size: 50px;
-line-height: 16px;
-text-align: right;
-float: right;
-padding: 5px;
-white-space: break-spaces;
-color: #000000c7;
 `;
 
 export const StyledTitleCollection = styled.header`
@@ -40,22 +26,44 @@ padding: 15px;
 margin-bottom: 50px;
 border-radius: 10px;
 `;
-
-export const StyledSearch = styled.input`
+export const StyledButton = styled.button`
+    display: inline-block;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: #009293;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    :hover {
+  background-color: #267fa8;
+  
+}
+`;
+export const StyledSearchBox = styled.input`
 background-color: #fff;
 color: #666666;
 font-size: 18.0px;
 height: 30px;
+width:30%;
 border: 1px solid #666666;
 border-radius: 5px;
-text-align: right;
-float:right;
 margin-bottom: 20px;
+text-align:center;
+`;
+
+export const StyledSearch = styled.div`
+display:flex;
+justify-content:center;
+width: 100%;
 `;
 
 export const StyledShipCard = styled.form`
 font-size: 26px;
-text-align: right;
 margin-bottom: 30px;
 border-bottom: 5px;
 border-bottom: outset;
@@ -80,10 +88,7 @@ padding: 50px;
 export const StyledParagraph = styled.p`
   font-size: 16px;
   line-height: 1.5;
-  margin-bottom: 16px;
-  text-align: right;
-  direction: rtl;
-
+  margin-bottom: 16px;  
   &.red {
     color: #f00606;
   }
@@ -98,5 +103,8 @@ export const StyledParagraph = styled.p`
 `;
 export const StyledLogo = styled.img`
 width: 30%;
-border-radius: 30px;
 `;
+export const StyledGroupOfBtn = styled.div`
+ display: flex;
+ gap: 10px;
+  `;

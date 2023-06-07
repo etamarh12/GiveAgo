@@ -13,7 +13,10 @@ import Swal from 'sweetalert2'
 
 function CreateReqPopup(props) {
   const carrier = useSelector(state => state.login.user.UserName);
+  const businessId = useSelector(state => state.login.user.businessId);
   const [customerName, setCustomerName] = useState("");
+  const [customerNumber, setCustomerNumber] = useState(0);
+
   const [customerAddress, setCustomerAddress] = useState("");
   const [customerNote, setCustomerNote] = useState("אין");
   let AVAILABLE = "חדש";
@@ -25,7 +28,7 @@ function CreateReqPopup(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = { customerName, customerAddress, AVAILABLE, customerNote, carrier, CreatedTime: new Date().toLocaleString() };
+      const formData = { businessId, customerName, customerNumber, customerAddress, AVAILABLE, customerNote, carrier, CreatedTime: new Date().toLocaleString() };
       await axios.post('http://localhost:3001/api/orders/newDelivery', formData);
     } catch (error) {
       console.error(error); // log any errors
@@ -41,19 +44,21 @@ function CreateReqPopup(props) {
     }, "2000");
   };
 
-  const isSubmitDisabled = !customerName || !customerAddress;
+  const isSubmitDisabled = !customerName || !customerAddress || !customerNumber;
 
   return (
     <StyledPopUp>
       <StyledPopUpContent>
-        <h2>בקשת משלוח</h2>
+        <h2>בקשה למשלוח</h2>
         <StyledForm onSubmit={handleSubmit}>
-          <StyledLabel>: שם הלקוח</StyledLabel>
-          <StyledInput onChange={e => setCustomerName(e.target.value)}></StyledInput>
-          <StyledLabel>: כתובת</StyledLabel>
-          <StyledInput onChange={e => setCustomerAddress(e.target.value)}></StyledInput>
-          <StyledLabel>: הערות</StyledLabel>
-          <StyledInput onChange={e => setCustomerNote(e.target.value)} style={{ height: '90px' }} ></StyledInput>
+          <StyledLabel>שם העסק :</StyledLabel>
+          <StyledInput placeholder="פיצה עגולה בעמ" onChange={e => setCustomerName(e.target.value)}></StyledInput>
+          <StyledLabel>מספר טלפון :</StyledLabel>
+          <StyledInput onChange={e => setCustomerNumber(e.target.value)}></StyledInput>
+          <StyledLabel>כתובת :</StyledLabel>
+          <StyledInput placeholder="התפוח 1 גינת הירקות .ישראל" onChange={e => setCustomerAddress(e.target.value)}></StyledInput>
+          <StyledLabel>הערות :</StyledLabel>
+          <StyledInput placeholder="מספר הזמנה , טלפון הלקוח , נגישות וכדומה." onChange={e => setCustomerNote(e.target.value)} style={{ height: '90px' }} ></StyledInput>
           <StyledButton disabled={isSubmitDisabled} type="submit">אישור</StyledButton>
         </StyledForm>
         <StyledButton onClick={popUpClose}>סגירה</StyledButton>

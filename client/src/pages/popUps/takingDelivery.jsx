@@ -43,7 +43,7 @@ function TakingDelivery(props) {
             <StyledPopUpContent>
                 <h2>לקיחת משלוח</h2>
                 <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>: מספר סידורי</StyledLabel>
+                    <StyledLabel>מספר סידורי :</StyledLabel>
                     <StyledInput onChange={e => setOrderId(e.target.value)}></StyledInput>
                     <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
                 </StyledForm>

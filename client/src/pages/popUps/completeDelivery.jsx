@@ -41,7 +41,7 @@ function CompleteDelivery(props) {
             <StyledPopUpContent>
                 <h2>השלמת משלוח</h2>
                 <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>: מספר סידורי</StyledLabel>
+                    <StyledLabel>מספר סידורי :</StyledLabel>
                     <StyledInput onChange={e => setOrderId(e.target.value)}></StyledInput>
                     <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
                 </StyledForm>

@@ -1,11 +1,14 @@
 import { db } from "../db.js";
 
+// new order
 export const newOrder = async (req, res) => {
 
   console.log("server received : " + JSON.stringify(req.body));
 
   const values = [
+    req.body.businessId ?? null,
     req.body.customerName ?? null,
+    req.body.customerNumber ?? null,
     req.body.customerAddress ?? null,
     req.body.AVAILABLE ?? null,
     req.body.customerNote ?? null,
@@ -14,7 +17,7 @@ export const newOrder = async (req, res) => {
   ];
 
   //Sql Query  
-  const q = `INSERT INTO orders (OrderName, OrderAddress, OrderAvailable, OrderNote, Carrier, CreatedTime) VALUES (?, ?, ?, ?, ?, ?)`;
+  const q = `INSERT INTO orders (CreatorId, OrderName, Phone, OrderAddress, OrderAvailable, OrderNote, Carrier, CreatedTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
   // Send req
   try {
     const [orderRes, _] = await db.promise().execute(q, [...values]);
@@ -27,6 +30,8 @@ export const newOrder = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+// delete order request
 export const delOrder = async (req, res) => {
   // Check req.body received
   console.log("server received : " + JSON.stringify(req.body));
@@ -44,6 +49,8 @@ export const delOrder = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+// get all orders
 export const allOrders = async (req, res) => {
   // Check req.body received
   console.log("server received : " + JSON.stringify(req.body));
@@ -61,6 +68,8 @@ export const allOrders = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+// complete delivery request
 export const comDelivery = async (req, res) => {
 
   // Check req.body received
@@ -85,6 +94,8 @@ export const comDelivery = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
+// take delivery req
 export const takeDelivery = async (req, res) => {
 
   // Check req.body received
