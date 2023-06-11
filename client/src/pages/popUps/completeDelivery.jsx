@@ -1,53 +1,53 @@
-import React, { useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
-import {
-    StyledPopUp,
-    StyledPopUpContent,
-    StyledLabel,
-    StyledInput,
-    StyledForm,
-    StyledButton
-} from './popUp.styled'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
-function CompleteDelivery(props) {
-    const [orderId, setOrderId] = useState("");
+function CompleteDelivery({ orderId, onClose }) {
     let EndedTime = new Date().toLocaleString()
-    const popUpClose = () => {
-        props.onClose();
-    }
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const formData = { orderId, EndedTime };
-            await axios.post('http://localhost:3001/api/orders/comDelivery', formData);
-        } catch (error) {
-            console.error(error); // log any errors
-        }
-        Swal.fire(
-            'בקשה נשלחה בהצלחה',
-            '',
-            'success'
-        )
-        popUpClose();
-        setTimeout(() => {
-            window.location.reload();
-        }, "2000");
-    };
-    const isSubmitDisabled = !orderId;
+    useEffect(() => {
+        const takeDelivery = async () => {
+            try {
+                let EndedTime = new Date().toLocaleString()
+                const formData = { orderId, EndedTime };   
+                console.log(formData)
+                await axios.post('http://localhost:3001/api/orders/comDelivery', formData);
+                Swal.fire('בקשה נשלחה בהצלחה', '', 'success');
+                onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                Swal.fire('שגיאה בבקשה', '', 'error');
+                onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        };
 
-    return (
-        <StyledPopUp>
-            <StyledPopUpContent>
-                <h2>השלמת משלוח</h2>
-                <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>מספר סידורי :</StyledLabel>
-                    <StyledInput onChange={e => setOrderId(e.target.value)}></StyledInput>
-                    <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
-                </StyledForm>
-                <StyledButton onClick={popUpClose}>סגירה</StyledButton>
-            </StyledPopUpContent>
-        </StyledPopUp>
-    )
-};
+        const showConfirmationDialog = () => {
+            Swal.fire({
+                title: 'סיום משלוח',
+                text: 'האם אתה בטוח שברצונך לסגור את המשלוח?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'אישור',
+                cancelButtonText: 'ביטול',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    takeDelivery();
+                } else {
+                    onClose();
+                }
+            });
+        };
+
+        showConfirmationDialog();
+    }, [orderId, EndedTime, onClose]);
+
+    return null;
+}
+
 export default CompleteDelivery;

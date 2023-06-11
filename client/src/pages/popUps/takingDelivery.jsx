@@ -1,55 +1,51 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import axios from 'axios';
-import {
-    StyledPopUp,
-    StyledPopUpContent,
-    StyledLabel,
-    StyledInput,
-    StyledForm,
-    StyledButton
-} from './popUp.styled'
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
-function TakingDelivery(props) {
-    const [orderId, setOrderId] = useState("");
-    const user = useSelector(state => state.login.user.UserName);
-
-    const popUpClose = () => {
-        props.onClose();
-    }
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const formData = { orderId, user };
-            await axios.post('http://localhost:3001/api/orders/takeDelivery', formData);
-        } catch (error) {
-            console.error(error); // log any errors
-        }
-        Swal.fire(
-            'בקשה נשלחה בהצלחה',
-            '',
-            'success'
-        )
-        popUpClose();
+function TakingDelivery({ userName, orderId, onClose }) {
+  useEffect(() => {
+    const takeDelivery = async () => {
+      try {
+        const formData = { userName, orderId };
+        console.log(formData)
+        await axios.post('http://localhost:3001/api/orders/takeDelivery', formData);
+        Swal.fire('בקשה נשלחה בהצלחה', '', 'success');
+        onClose();
         setTimeout(() => {
-            window.location.reload();
-        }, "2000");
+          window.location.reload();
+        }, 2000);
+      } catch (error) {
+        Swal.fire('שגיאה בבקשה', '', 'error');
+        onClose();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
     };
-    const isSubmitDisabled = !orderId;
 
-    return (
-        <StyledPopUp>
-            <StyledPopUpContent>
-                <h2>לקיחת משלוח</h2>
-                <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>מספר סידורי :</StyledLabel>
-                    <StyledInput onChange={e => setOrderId(e.target.value)}></StyledInput>
-                    <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
-                </StyledForm>
-                <StyledButton onClick={popUpClose}>סגירה</StyledButton>
-            </StyledPopUpContent>
-        </StyledPopUp>
-    )
-};
+    const showConfirmationDialog = () => {
+      Swal.fire({
+        title: 'לקיחת משלוח',
+        text: 'האם אתה בטוח שברצונך לקחת משלוח?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'אישור',
+        cancelButtonText: 'ביטול',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          takeDelivery();
+        } else {
+          onClose();
+        }
+      });
+    };
+
+    showConfirmationDialog();
+  }, [userName, orderId, onClose]);
+
+  return null;
+}
+
 export default TakingDelivery;

@@ -98,7 +98,5 @@ export const StyledButton = styled.button`
     margin-bottom: 10px;
     :hover {
   background-color: #267fa8;
-  
 }
 `;
-

@@ -11,13 +11,11 @@ import {
 } from './popUp.styled'
 import Swal from 'sweetalert2'
 
-
 function CreateUserPopup(props) {
     const [userName, setUserName] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [userType, setUserType] = useState("M");
     const [userBusinessId, setUserBusinessId] = useState(0);
-
 
     const popUpClose = () => {
         props.onClose();

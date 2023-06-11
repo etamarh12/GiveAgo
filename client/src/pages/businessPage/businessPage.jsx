@@ -10,7 +10,6 @@ import {
   StyledSearchBox,
   StyledPage,
   StyledSearch,
-  //StyledShipCard,
   StyledTitleCollection,
   StyledParagraph,
   StyledCollection,

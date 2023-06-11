@@ -5,6 +5,12 @@ export const StyledPage = styled.div`
     flex-direction: column;
 `;
 
+export const StyledChartContainer = styled.div`
+width: 100%;
+`;
+export const StyledCanvas = styled.canvas`
+width: 70%;
+`;
 
 export const StyledFooter = styled.footer`
 height: auto;

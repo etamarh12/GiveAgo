@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-
 import { fetchLogin } from '../../actions/loginActions';
 import {
   StyledLogin,
@@ -15,7 +14,6 @@ import {
   StyledField
 } from './login.styled';
 import giveagoLogin from '../../img/giveagoLogin.png'
-
 
 export function Login() {
   const navigate = useNavigate();

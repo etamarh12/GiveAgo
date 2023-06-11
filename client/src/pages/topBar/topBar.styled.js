@@ -33,7 +33,7 @@ text-align: center;
 `;
 
 export const StyledLogo = styled.img`
-width: 100%;
+width: 65%;
 `;
 
 export const StyledGroupOfBtn = styled.div`

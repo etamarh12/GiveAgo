@@ -17,9 +17,7 @@ export const login = async (req, res) => {
       // Check user length
       return res.status(404).json({ error: "Username or password is incorrect" });
     }
-
     const { IsLocked, LockoutExpiresAt } = userRes[0];
-
     // Check if the account is locked
     if (IsLocked) {
       const currentTime = new Date();
@@ -54,7 +52,6 @@ export const login = async (req, res) => {
 
         return res.status(403).json({ error: "Account locked. Please try again later" });
       }
-
       return res.status(400).json({ error: "Username or password is incorrect" });
     }
 

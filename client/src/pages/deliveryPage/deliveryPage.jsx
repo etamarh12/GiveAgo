@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AgGridReact } from 'ag-grid-react';
+import { useSelector } from 'react-redux';
+
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import {
@@ -9,21 +11,26 @@ import {
   StyledSearchBox,
   StyledPage,
   StyledSearch,
-  StyledGroupOfBtn,
   StyledTitleCollection,
   StyledCollection,
   StyledButton,
-  StyledParagraph
+  StyledParagraph,
 } from './deliveryPage.styled';
 import TopBar from '../topBar/topBar';
 import TakingDelivery from '../popUps/takingDelivery';
 import CompleteDelivery from '../popUps/completeDelivery';
 
 export function DeliveryPage() {
+  const user = useSelector(state => state.login.user);
   const [deliveries, setDeliveries] = useState([]);
   const [searchValue, setSearchValue] = useState('');
-  const [isTakeDeliveryPopupOpen, setIsTakeDeliveryPopupOpen] = useState(false);
-  const [isCloseDeliveryPopupOpen, setIsCloseDeliveryPopupOpen] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [isTakingDeliveryPopupOpen, setIsTakingDeliveryPopupOpen] = useState(false);
+  const [isFinishDeliveryPopupOpen, setIsFinishDeliveryPopupOpen] = useState(false);
+
+  useEffect(() => {
+    getOrders();
+  }, []);
 
   const getOrders = async () => {
     try {
@@ -35,38 +42,49 @@ export function DeliveryPage() {
     }
   };
 
-  useEffect(() => {
-    getOrders();
-  }, []);
-
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const handleTakeDelivery = () => {
-    setIsTakeDeliveryPopupOpen(true);
+  const handleTakingDelivery = (rowData) => {
+    setSelectedRowData(rowData);
+    setIsTakingDeliveryPopupOpen(true);
   };
 
-  const handleCloseDelivery = () => {
-    setIsCloseDeliveryPopupOpen(true);
+  const handleFinishDelivery = (rowData) => {
+    setSelectedRowData(rowData);
+    setIsFinishDeliveryPopupOpen(true);
   };
 
-  const filteredDeliveries = deliveries.filter(delivery => {
-    const searchLowercase = searchValue ? searchValue.toLowerCase() : '';
-    return (
-      delivery.OrderId.toString().toLowerCase().includes(searchLowercase) ||
-      delivery.OrderName?.toLowerCase().includes(searchLowercase) ||
-      delivery.Phone?.toLowerCase().includes(searchLowercase) ||
-      delivery.OrderAddress?.toLowerCase().includes(searchLowercase) ||
-      delivery.OrderAvailable?.toLowerCase().includes(searchLowercase) ||
-      delivery.OrderNote?.toLowerCase().includes(searchLowercase) ||
-      delivery.Carrier?.toLowerCase().includes(searchLowercase) ||
-      delivery.CreatedTime?.toLowerCase().includes(searchLowercase) ||
-      delivery.EndedTime?.toLowerCase().includes(searchLowercase)
-    );
-  }).reverse();
+  const handleCloseTakingPopup = () => {
+    setIsTakingDeliveryPopupOpen(false);
+  };
+
+  const handleCloseFinishPopup = () => {
+    setIsFinishDeliveryPopupOpen(false);
+  };
+
+  const TakeDeliveryButton = ({ data }) => {
+    if (data.OrderAvailable === 'חדש') {
+      return (
+        <StyledButton onClick={() => handleTakingDelivery(data)}>לקחת</StyledButton>
+      );
+    }
+    return null;
+  };
+
+  const FinishDeliveryButton = ({ data }) => {
+    if (data.OrderAvailable === 'ממתין' && data.Carrier === user.UserName) {
+      return (
+        <StyledButton onClick={() => handleFinishDelivery(data)}>לסיים</StyledButton>
+      );
+    }
+    return null;
+  };
 
   const columnDefs = [
+    { headerName: 'לקיחת משלוח', field: 'OrderId', width: 130, cellRendererFramework: TakeDeliveryButton },
+    { headerName: 'לסיים משלוח', field: 'OrderId', width: 130, cellRendererFramework: FinishDeliveryButton },
     { headerName: 'מספר סידורי', field: 'OrderId', width: 130 },
     { headerName: 'שם הלקוח', field: 'OrderName', width: 200 },
     { headerName: 'טלפון', field: 'Phone', width: 200 },
@@ -100,41 +118,58 @@ export function DeliveryPage() {
     { headerName: 'הסתיים ב', field: 'EndedTime', width: 200 },
   ];
 
-  const DeliveriesGrid = () => {
+  const filteredDeliveries = deliveries.filter((delivery) => {
+    const searchLowercase = searchValue ? searchValue.toLowerCase() : '';
     return (
-      <div className="ag-theme-alpine" style={{ height: '500px', width: '100%' }}>
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={filteredDeliveries}
-          enableFilter={true}
-          enableSorting={true}
-          enableRtl={true}
-          suppressMenuHide={true}
-        ></AgGridReact>
-      </div>
+      delivery.OrderId.toString().toLowerCase().includes(searchLowercase) ||
+      delivery.OrderName?.toLowerCase().includes(searchLowercase) ||
+      delivery.Phone?.toLowerCase().includes(searchLowercase) ||
+      delivery.OrderAddress?.toLowerCase().includes(searchLowercase) ||
+      delivery.OrderAvailable?.toLowerCase().includes(searchLowercase) ||
+      delivery.OrderNote?.toLowerCase().includes(searchLowercase) ||
+      delivery.Carrier?.toLowerCase().includes(searchLowercase) ||
+      delivery.CreatedTime?.toLowerCase().includes(searchLowercase) ||
+      delivery.EndedTime?.toLowerCase().includes(searchLowercase)
     );
-  };
+  }).reverse();
 
   return (
     <StyledPage>
       <TopBar />
       <StyledDeliveries>
         <StyledSearch>
-          <StyledSearchBox placeholder="חיפוש" onChange={handleSearchChange} />
+          <StyledSearchBox
+            type="text"
+            placeholder="חיפוש"
+            value={searchValue}
+            onChange={handleSearchChange}
+          />
         </StyledSearch>
         <StyledCollection>
-          {isTakeDeliveryPopupOpen && (
-            <TakingDelivery onClose={() => setIsTakeDeliveryPopupOpen(false)} key="take-delivery-popup" />
-          )}
-          {isCloseDeliveryPopupOpen && (
-            <CompleteDelivery onClose={() => setIsCloseDeliveryPopupOpen(false)} key="close-delivery-popup" />
-          )}
           <StyledTitleCollection>משלוחים</StyledTitleCollection>
-          <StyledGroupOfBtn>
-            <StyledButton onClick={handleTakeDelivery}>לקיחת משלוח</StyledButton>
-            <StyledButton onClick={handleCloseDelivery}>סיום משלוח</StyledButton>
-          </StyledGroupOfBtn>
-          {!isTakeDeliveryPopupOpen && !isCloseDeliveryPopupOpen && <DeliveriesGrid />}
+          <div className="ag-theme-alpine" style={{ height: '500px', width: '100%' }}>
+            <AgGridReact
+              columnDefs={columnDefs}
+              rowData={filteredDeliveries}
+              enableFilter={true}
+              enableSorting={true}
+              enableRtl={true}
+              suppressMenuHide={true}
+            ></AgGridReact>
+          </div>
+          {isTakingDeliveryPopupOpen && (
+            <TakingDelivery
+              userName={user.UserName}
+              orderId={selectedRowData.OrderId}
+              onClose={handleCloseTakingPopup}
+            />
+          )}
+          {isFinishDeliveryPopupOpen && (
+            <CompleteDelivery
+              orderId={selectedRowData.OrderId}
+              onClose={handleCloseFinishPopup}
+            />
+          )}
         </StyledCollection>
         <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
       </StyledDeliveries>
