@@ -12,7 +12,6 @@ GiveAgo is a delivery platform designed to facilitate the efficient and organize
 
 - **Delivery Notifications**: GiveAgo sends automated notifications to both businesses and customers to keep them updated about important delivery milestones, such as pickup, transit, and delivery.
 
-- **Payment Integration**: The platform integrates with popular payment gateways, allowing businesses to handle payment transactions seamlessly.
 
 ## Installation
 
