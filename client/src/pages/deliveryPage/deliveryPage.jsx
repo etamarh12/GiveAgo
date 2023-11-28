@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AgGridReact } from 'ag-grid-react';
 import { useSelector } from 'react-redux';
-
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import {
@@ -18,6 +17,7 @@ import {
 } from './deliveryPage.styled';
 import TopBar from '../topBar/topBar';
 import TakingDelivery from '../popUps/takingDelivery';
+import DeleteReqPopup from '../popUps/deleteReqPopup';
 import CompleteDelivery from '../popUps/completeDelivery';
 
 export function DeliveryPage() {
@@ -27,6 +27,8 @@ export function DeliveryPage() {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isTakingDeliveryPopupOpen, setIsTakingDeliveryPopupOpen] = useState(false);
   const [isFinishDeliveryPopupOpen, setIsFinishDeliveryPopupOpen] = useState(false);
+  const [isDeleteDeliveryPopupOpen, setIsDeleteDeliveryPopupOpen] = useState(false);
+
 
   useEffect(() => {
     getOrders();
@@ -50,6 +52,10 @@ export function DeliveryPage() {
     setSelectedRowData(rowData);
     setIsTakingDeliveryPopupOpen(true);
   };
+  const handleDeleteDelivery = (rowData) => {
+    setSelectedRowData(rowData);
+    setIsDeleteDeliveryPopupOpen(true);
+  };
 
   const handleFinishDelivery = (rowData) => {
     setSelectedRowData(rowData);
@@ -58,6 +64,9 @@ export function DeliveryPage() {
 
   const handleCloseTakingPopup = () => {
     setIsTakingDeliveryPopupOpen(false);
+  };
+  const handleCloseDeletePopup = () => {
+    setIsDeleteDeliveryPopupOpen(false);
   };
 
   const handleCloseFinishPopup = () => {
@@ -69,6 +78,14 @@ export function DeliveryPage() {
       return (
         <StyledButton onClick={() => handleTakingDelivery(data)}>לקחת</StyledButton>
       );
+    }
+    return null;
+  };
+  const DeleteDeliveryButton = ({ data }) => {
+    if (user && user.accountType === 'M') {
+      return (
+        <StyledButton onClick={() => handleDeleteDelivery(data)}>מחיקה</StyledButton>
+      );   
     }
     return null;
   };
@@ -85,6 +102,7 @@ export function DeliveryPage() {
   const columnDefs = [
     { headerName: 'לקיחת משלוח', field: 'OrderId', width: 130, cellRendererFramework: TakeDeliveryButton },
     { headerName: 'לסיים משלוח', field: 'OrderId', width: 130, cellRendererFramework: FinishDeliveryButton },
+    { headerName: 'מחיקת משלוח', field: 'OrderId', width: 130, cellRendererFramework: DeleteDeliveryButton },
     { headerName: 'מספר סידורי', field: 'OrderId', width: 130 },
     { headerName: 'שם הלקוח', field: 'OrderName', width: 200 },
     { headerName: 'טלפון', field: 'Phone', width: 200 },
@@ -170,8 +188,14 @@ export function DeliveryPage() {
               onClose={handleCloseFinishPopup}
             />
           )}
+          {isDeleteDeliveryPopupOpen && (
+            <DeleteReqPopup
+              orderId={selectedRowData.OrderId}
+              onClose={handleCloseDeletePopup}
+            />
+          )}
         </StyledCollection>
-        <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
+        <StyledFooter>זכויות יוצרים © 2023 ItamarChen. כל הזכויות שמורות</StyledFooter>
       </StyledDeliveries>
     </StyledPage>
   );

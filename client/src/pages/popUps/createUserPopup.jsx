@@ -58,13 +58,17 @@ function CreateUserPopup(props) {
                         <option value="D">שליח</option>
                         <option value="B">בעל עסק</option>
                     </StyledSelect>
-                    <StyledLabel>מספר עסק</StyledLabel>
-                    <StyledInput onChange={e => setUserBusinessId(e.target.value)}></StyledInput>
-                    <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
-                </StyledForm>
-                <StyledButton onClick={popUpClose}>סגירה</StyledButton>
-            </StyledPopUpContent>
-        </StyledPopUp>
+                {userType === 'B' || userType === 'D' ? (
+                    <>
+                        <StyledLabel>מספר עסק</StyledLabel>
+                        <StyledInput type="number" onChange={(e) => setUserBusinessId(e.target.value)} />
+                    </>
+                ) : null}
+                <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
+            </StyledForm>
+            <StyledButton onClick={popUpClose}>סגירה</StyledButton>
+        </StyledPopUpContent>
+        </StyledPopUp >
     )
 };
 export default CreateUserPopup;

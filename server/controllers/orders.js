@@ -31,12 +31,12 @@ export const newOrder = async (req, res) => {
 // delete order request
 export const delOrder = async (req, res) => {
   // Check req.body received
-  console.log("server received : " + JSON.stringify(req.body));
+  console.log("server received : " + JSON.stringify(req.body.orderId));
   //Sql Query  
   const q = `DELETE FROM orders WHERE OrderId=?`;
   // Send req
   try {
-    const [orderRes, _] = await db.promise().execute(q, [req.body.deliveryId]);
+    const [orderRes, _] = await db.promise().execute(q, [req.body.orderId]);
     const { ...other } = orderRes;
     res.json(other);
   } catch (err) {
@@ -111,7 +111,7 @@ export const filteredOrders = async (req, res) => {
   const waitingOrdersQuery = "SELECT COUNT(*) AS waitingOrdersCount FROM orders WHERE OrderAvailable = 'ממתין'";
   const closedOrdersQuery = "SELECT COUNT(*) AS closedOrdersCount FROM orders WHERE OrderAvailable = 'הושלם'";
   const totalOrdersQuery = "SELECT COUNT(*) AS totalOrdersCount FROM orders";
-  
+
   try {
     const [
       newOrdersRes,

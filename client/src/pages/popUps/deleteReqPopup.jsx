@@ -1,55 +1,48 @@
-import React, { useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
-import {
-    StyledPopUp,
-    StyledPopUpContent,
-    StyledLabel,
-    StyledInput,
-    StyledForm,
-    StyledButton
-} from './popUp.styled'
 import Swal from 'sweetalert2'
 
-function DeleteReqPopup(props) {
-    const [deliveryId, setDeliveryId] = useState("");
+function DeleteReqPopup({ orderId, onClose }) {
 
-    const popUpClose = () => {
-        props.onClose();
-    }
+    useEffect(() => {
+        const DeleteDelivery = async () => {
+            try {
+                await axios.post('http://localhost:3001/api/orders/deleteDelivery', {orderId});
+                Swal.fire('בקשה נשלחה בהצלחה', '', 'success');
+                onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                Swal.fire('שגיאה בבקשה', '', 'error');
+                onClose();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            }
+        };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const formData = { deliveryId };
-            await axios.post('http://localhost:3001/api/orders/deleteDelivery', formData);
-        } catch (error) {
-            console.error(error); // log any errors
-        }
-        Swal.fire(
-            'בקשה נשלחה בהצלחה',
-            '',
-            'success'
-        )
-        props.onClose();
-        setTimeout(() => {
-            window.location.reload();
-        }, "2000");
-    };
+        const showConfirmationDialog = () => {
+            Swal.fire({
+                title: 'מחיקת משלוח',
+                text: 'האם אתה בטוח שברצונך למחוק את המשלוח?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'אישור',
+                cancelButtonText: 'ביטול',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    DeleteDelivery();
+                } else {
+                    onClose();
+                }
+            });
+        };
 
-    const isSubmitDisabled = !deliveryId;
-
-    return (
-        <StyledPopUp>
-            <StyledPopUpContent>
-                <h2>מחיקת משלוח</h2>
-                <StyledForm onSubmit={handleSubmit}>
-                    <StyledLabel>מספר סידורי :</StyledLabel>
-                    <StyledInput type="number" onChange={e => setDeliveryId(e.target.value)}></StyledInput>
-                    <StyledButton disabled={isSubmitDisabled} >אישור</StyledButton>
-                </StyledForm>
-                <StyledButton onClick={popUpClose}>סגירה</StyledButton>
-            </StyledPopUpContent>
-        </StyledPopUp>
-    )
-};
+        showConfirmationDialog();
+    }, [orderId, onClose]);
+    return null;
+}
 export default DeleteReqPopup;

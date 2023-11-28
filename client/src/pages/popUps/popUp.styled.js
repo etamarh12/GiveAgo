@@ -28,7 +28,7 @@ export const StyledLabel = styled.label`
   width: 335px;
 `;
 
-export const StyledInput = styled.textarea`
+export const StyledInput = styled.input`
   background-color: #fff;
   border: 1px solid #cbcbcb;
   border-radius: 4px;

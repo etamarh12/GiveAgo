@@ -17,15 +17,12 @@ import {
 import TopBar from '../topBar/topBar';
 import DeleteUserPopup from '../popUps/deleteUserPopup';
 import CreateUserPopup from '../popUps/createUserPopup';
-import DeleteReqPopup from '../popUps/deleteReqPopup';
 
 export function ManagePage() {
   const [users, setUsers] = useState([]);
   const [searchValue, setSearchValue] = useState('');
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isCreateUserPopupOpen, setIsCreateUserPopupOpen] = useState(false);
-  const [isDeleteDeliveryPopupOpen, setIsDeleteDeliveryPopupOpen] = useState(false);
-
   useEffect(() => {
     getUsers();
   }, []);
@@ -64,10 +61,6 @@ export function ManagePage() {
     setIsCreateUserPopupOpen(true);
   };
 
-  const handleDeleteDelivery = () => {
-    setIsDeleteDeliveryPopupOpen(true);
-  };
-
   const RenderDeleteUserPopup = () => {
     if (selectedRowData) {
       return (
@@ -89,15 +82,8 @@ export function ManagePage() {
     return null;
   };
 
-  const RenderDeleteDeliveryPopupPopup = () => {
-    if (isDeleteDeliveryPopupOpen) {
-      return <DeleteReqPopup onClose={() => setIsDeleteDeliveryPopupOpen(false)} />;
-    }
-    return null;
-  };
-
   const RenderAgGrid = () => {
-    if (!selectedRowData && !isCreateUserPopupOpen && !isDeleteDeliveryPopupOpen) {
+    if (!selectedRowData && !isCreateUserPopupOpen) {
       return (
         <div className="ag-theme-alpine" style={{ height: '500px' }}>
           <AgGridReact
@@ -140,11 +126,9 @@ export function ManagePage() {
         <StyledCollection>
           <RenderDeleteUserPopup />
           <RenderCreateUserPopup />
-          <RenderDeleteDeliveryPopupPopup />
           <StyledTitleCollection>אפשרויות מנהל</StyledTitleCollection>
           <StyledGroupOfBtn>
             <StyledButton onClick={handleCreateUser}>יצירת משתמש</StyledButton>
-            <StyledButton onClick={handleDeleteDelivery}>מחיקת משלוח</StyledButton>
           </StyledGroupOfBtn>
           <RenderAgGrid />
         </StyledCollection>

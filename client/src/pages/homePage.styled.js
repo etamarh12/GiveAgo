@@ -7,9 +7,10 @@ export const StyledPage = styled.div`
 
 export const StyledChartContainer = styled.div`
 width: 100%;
+display:flex;
+justify-content: center;
 `;
 export const StyledCanvas = styled.canvas`
-width: 70%;
 `;
 
 export const StyledFooter = styled.footer`

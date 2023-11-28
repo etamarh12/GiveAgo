@@ -54,7 +54,7 @@ function CreateReqPopup(props) {
           <StyledLabel>שם העסק :</StyledLabel>
           <StyledInput placeholder="פיצה עגולה בעמ" onChange={e => setCustomerName(e.target.value)}></StyledInput>
           <StyledLabel>מספר טלפון :</StyledLabel>
-          <StyledInput onChange={e => setCustomerNumber(e.target.value)}></StyledInput>
+          <StyledInput type="number" onChange={e => setCustomerNumber(e.target.value)}></StyledInput>
           <StyledLabel>כתובת :</StyledLabel>
           <StyledInput placeholder="התפוח 1 גינת הירקות .ישראל" onChange={e => setCustomerAddress(e.target.value)}></StyledInput>
           <StyledLabel>הערות :</StyledLabel>
