@@ -132,9 +132,7 @@ export function ManagePage() {
           </StyledGroupOfBtn>
           <RenderAgGrid />
         </StyledCollection>
-        <StyledFooter>
-          זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות
-        </StyledFooter>
+        <StyledFooter>זכויות יוצרים © 2023 ItamarChen. כל הזכויות שמורות</StyledFooter>
       </StyledManage>
     </StyledPage>
   );

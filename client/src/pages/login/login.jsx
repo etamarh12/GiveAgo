@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { fetchLogin } from '../../actions/loginActions';
+import { MutatingDots } from 'react-loader-spinner'
 import {
   StyledLogin,
   StyledTitle,
@@ -43,10 +44,20 @@ export function Login() {
           <StyledInput type="password" placeholder="הזן סיסמה" onChange={e => setPassword(e.target.value)} />
         </StyledField>
         <StyledButton onClick={requestLogin} disabled={!password || !userName || loginState.loading}>כניסה</StyledButton>
-        {loginState.loading && <div>Loading...</div>}
+        {loginState.loading && <MutatingDots
+          height="100"
+          width="100"
+          color="#3370ff"
+          secondaryColor='#467dfe'
+          radius='12.5'
+          ariaLabel="mutating-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />}
         {loginState.error && <div>{loginState.error}</div>}
       </StyledForm>
-      <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
+      <StyledFooter>זכויות יוצרים © 2023 ItamarChen. כל הזכויות שמורות</StyledFooter>
     </StyledLogin>
   );
 }

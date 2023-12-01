@@ -19,6 +19,8 @@ import TopBar from '../topBar/topBar';
 import TakingDelivery from '../popUps/takingDelivery';
 import DeleteReqPopup from '../popUps/deleteReqPopup';
 import CompleteDelivery from '../popUps/completeDelivery';
+import ElapsedTimeCounter from '../pagesHelper/ElapsedTimeCounter';
+
 
 export function DeliveryPage() {
   const user = useSelector(state => state.login.user);
@@ -85,7 +87,7 @@ export function DeliveryPage() {
     if (user && user.accountType === 'M') {
       return (
         <StyledButton onClick={() => handleDeleteDelivery(data)}>מחיקה</StyledButton>
-      );   
+      );
     }
     return null;
   };
@@ -132,7 +134,19 @@ export function DeliveryPage() {
       ),
     },
     { headerName: 'שליח', field: 'Carrier', width: 150 },
-    { headerName: 'נוצר ב', field: 'CreatedTime', width: 200 },
+    {
+      headerName: 'נוצר ב',
+      field: 'CreatedTime',
+      width: 200,
+    },
+    {
+      headerName: 'זמן שעבר',
+      field: 'ElapsedTime',
+      width: 200,
+      cellRendererFramework: ({ data }) => (
+        <ElapsedTimeCounter createdTime={data.CreatedTime} endedTime={data.EndedTime} />
+      ),
+    },
     { headerName: 'הסתיים ב', field: 'EndedTime', width: 200 },
   ];
 

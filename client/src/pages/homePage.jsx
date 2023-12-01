@@ -7,7 +7,7 @@ import {
     StyledParagraph,
     StyledArticle,
 } from './homePage.styled';
-import HomeChart from './pagesHelper/homeChart'; // Update the path
+import HomeChart from './pagesHelper/homeChart';
 
 export const HomePage = () => {
 
@@ -26,7 +26,7 @@ export const HomePage = () => {
                 </StyledArticle>
                     <HomeChart />
             </StyledHeader>
-            <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
+            <StyledFooter>זכויות יוצרים © 2023 ItamarChen. כל הזכויות שמורות</StyledFooter>
         </StyledPage>
     );
 };

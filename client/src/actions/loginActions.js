@@ -11,11 +11,15 @@ export const fetchLogin = (userName, password) => async (dispatch) => {
     });
     if (response.ok) {
       const responseData = await response.json();
-      dispatch({ type: 'FETCH_LOGIN_SUCCESS', payload: responseData });
+      setTimeout(() => {
+        dispatch({ type: 'FETCH_LOGIN_SUCCESS', payload: responseData });
+      }, 2000);
     } else {
       const responseData = await response.json();
+      setTimeout(() => {
+        dispatch({ type: 'FETCH_LOGIN_FAILURE', payload: responseData.error });
+      }, 2000);
       console.log(responseData.error);
-      dispatch({ type: 'FETCH_LOGIN_FAILURE', payload: responseData.error });
     }
   } catch (error) {
     if (error.status === 401) {

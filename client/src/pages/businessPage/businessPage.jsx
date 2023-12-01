@@ -17,6 +17,8 @@ import {
 } from './businessPage.styled';
 import TopBar from '../topBar/topBar';
 import CreateReqPopup from '../popUps/createReqPopup';
+import ElapsedTimeCounter from '../pagesHelper/ElapsedTimeCounter';
+
 
 
 export function BusinessPage() {
@@ -93,7 +95,19 @@ export function BusinessPage() {
       ),
     },
     { headerName: 'שליח', field: 'Carrier', width: 150 },
-    { headerName: 'נוצר ב', field: 'CreatedTime', width: 200 },
+    {
+      headerName: 'נוצר ב',
+      field: 'CreatedTime',
+      width: 200,
+    },
+    {
+      headerName: 'זמן שעבר',
+      field: 'ElapsedTime',
+      width: 200,
+      cellRendererFramework: ({ data }) => (
+        <ElapsedTimeCounter createdTime={data.CreatedTime} endedTime={data.EndedTime} />
+      ),
+    },
     { headerName: 'הסתיים ב', field: 'EndedTime', width: 200 },
   ];
 
@@ -125,7 +139,7 @@ export function BusinessPage() {
             </div>
           )}
         </StyledCollection>
-        <StyledFooter>זכויות יוצרים © 2023 ChenWave R&D. כל הזכויות שמורות</StyledFooter>
+        <StyledFooter>זכויות יוצרים © 2023 ItamarChen. כל הזכויות שמורות</StyledFooter>
       </StyledBusiness>
     </StyledPage>
   );

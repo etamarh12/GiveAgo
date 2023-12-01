@@ -57,7 +57,6 @@ function App() {
         </>
       );
     } else {
-      // Handle invalid account type
       return <Navigate to="/login" />;
     }
   };
