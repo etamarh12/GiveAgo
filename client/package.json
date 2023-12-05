@@ -15,6 +15,7 @@
     "chart.js": "^4.3.0",
     "echarts": "^5.4.3",
     "fixed-data-table-2": "^1.2.18",
+    "gh-pages": "^6.1.0",
     "handsontable": "^12.4.0",
     "history": "^5.3.0",
     "react": "^18.2.0",
@@ -35,6 +36,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
